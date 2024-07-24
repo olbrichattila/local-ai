@@ -21,7 +21,8 @@ func main() {
 
 		input = input[:len(input)-1]
 		if len(input) > 0 {
-			generated := lm.Generate(input)
+			// generated := lm.Generate(input)
+			generated := lm.Chat(input)
 
 			for resp := range generated {
 				fmt.Print(resp)
