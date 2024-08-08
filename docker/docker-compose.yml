@@ -6,6 +6,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - INTEL_GPU_DEVICE=/dev/dri
     ports:
       - "11434:11434"
     volumes:

@@ -1,12 +1,19 @@
-# Use the latest Ollama image as the base
 FROM ollama/ollama:latest
 
-# Set environment variables if needed (for example, to configure Ollama)
-# ENV OLLAMA_API_KEY=your_api_key_here
+# Install dependencies for Intel GPU support
+RUN apt-get update && \
+    apt-get install -y \
+    intel-gpu-tools \
+    vainfo \
+    libva2 \
+    libva-drm2 \
+    libva-x11-2 \
+    i965-va-driver \
+    gstreamer1.0-vaapi && \
+    rm -rf /var/lib/apt/lists/*
 
-# Run Ollama CLI to pull the Llama2 model
-# RUN ollama pull llama2
+# Add any additional setup commands if necessary
+# Example: Copy application files or set environment variables
 
-# Set the command to be executed when the container starts
-# Replace with the appropriate command if needed
-# CMD ["ollama", "serve", "llama2"]
+# Set the entrypoint or command if different from the base image
+# CMD ["your_startup_command"]
