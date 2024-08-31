@@ -25,10 +25,9 @@ func main() {
 			// generated := lm.Generate(input)
 			generated := lm.Chat(input)
 			fullWord := ""
+			speach.Speaker()
 
 			for resp := range generated {
-				// fmt.Printf("|%s|", resp)
-				// speach.TextToSPeach(resp)
 				firstChar := "-"
 				if len(resp) > 0 {
 					firstChar = string(resp[0])
@@ -36,37 +35,16 @@ func main() {
 				fullWord = fullWord + resp
 				if firstChar == " " {
 					fmt.Print(fullWord)
-					speach.TextToSPeach(fullWord)
+					speach.Append(fullWord)
 					fullWord = ""
 				}
 
 			}
 
 			if fullWord != "" {
+				speach.Append(fullWord)
 				fmt.Print(fullWord)
-				speach.TextToSPeach(fullWord)
 			}
-
-			// sentence := ""
-
-			// for resp := range generated {
-			// 	fmt.Print(resp)
-			// 	// speach.TextToSPeach(resp)
-			// 	lastChar := " "
-			// 	if len(resp) > 0 {
-			// 		lastChar = string(resp[len(resp)-1])
-			// 	}
-
-			// 	sentence = sentence + resp
-			// 	if lastChar == "." || lastChar == "!" || lastChar == "\n" {
-			// 		speach.TextToSPeach(sentence)
-			// 		sentence = ""
-			// 	}
-			// }
-
-			// if sentence != "" {
-			// 	speach.TextToSPeach(sentence)
-			// }
 
 			fmt.Println()
 		} else {
