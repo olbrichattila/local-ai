@@ -6,11 +6,16 @@ import (
 	"chat/internal/speach"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
 	lm := ollama.New("http://localhost:11434")
 
+	// Create a channel to signal the Goroutine to stop
+	done := make(chan bool)
+
+	speach.Speaker(done)
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("Enter text: ")
@@ -25,7 +30,6 @@ func main() {
 			// generated := lm.Generate(input)
 			generated := lm.Chat(input)
 			fullWord := ""
-			speach.Speaker()
 
 			for resp := range generated {
 				firstChar := "-"
@@ -51,4 +55,8 @@ func main() {
 			break
 		}
 	}
+
+	done <- true
+
+	time.Sleep(2 * time.Second)
 }

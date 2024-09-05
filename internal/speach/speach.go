@@ -35,28 +35,31 @@ func PullFirst() (string, bool) {
 	return first, true
 }
 
-func Speaker() {
+func Speaker(done chan bool) {
 	go func() {
 		cnt := 1
 		fewWords := ""
 		for {
-			word, ok := PullFirst()
-			if ok {
-				fewWords = fewWords + word
-				cnt--
-				if cnt == 0 {
-					cnt = 8
-					cleanedText := strings.ReplaceAll(fewWords, "**", "")
-					fewWords = ""
-					cmd := exec.Command("espeak", cleanedText)
-					err := cmd.Run()
-					if err != nil {
-						log.Fatal(err)
+			select {
+			case <-done:
+				return
+			default:
+				word, ok := PullFirst()
+				if ok {
+					fewWords = fewWords + word
+					cnt--
+					if cnt == 0 {
+						cnt = 8
+						cleanedText := strings.ReplaceAll(fewWords, "**", "")
+						fewWords = ""
+						cmd := exec.Command("espeak", cleanedText)
+						err := cmd.Run()
+						if err != nil {
+							log.Fatal(err)
+						}
 					}
 				}
-
 			}
-
 		}
 	}()
 }
